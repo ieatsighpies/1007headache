@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TABLESIZE 7
-#define PRIME     5
+#define TABLESIZE 37
+#define PRIME     13
 
 enum Marker {EMPTY,USED};
 
@@ -80,50 +80,52 @@ int main()
 
 int HashInsert(int key, HashSlot hashTable[])
 {
+ // Write your code here
     int count=0,probe=hash(key),link=-1;
     //empty table, full table
     //hash takes u to empty slot/used slot
     
-    while(count!=TABLESIZE){
-        
-        if(hashTable[probe].next== -1){
-            if(hashTable[probe].indicator==EMPTY){
-                if(link==-1){
-                    hashTable[probe].key=key;
-                    hashTable[probe].indicator=USED;
-                    return probe;
-                }
-                else{
-                    hashTable[probe].key=key;
-                    hashTable[probe].indicator=USED;
-                    hashTable[link].next = probe;
-                    return probe;
-                }
-            }
-            else if(hashTable[probe].indicator==USED){
-                count++;
-                //no duplicates
-                if(hashTable[probe].key==key)
-                    return -1;
-                if(link== -1)
-                    link = probe;
-                // while(hashTable[probe].indicator==USED){
-                //     probe= (probe+1)%TABLESIZE;
-                //     count++;
-                // } 
-                probe = (probe+1)%TABLESIZE;
-            }
+    while(count<TABLESIZE){
+        if(hashTable[probe].indicator==EMPTY){
+            hashTable[probe].key=key;
+            hashTable[probe].indicator=USED;
+            // if(link!=-1)
+            //     hashTable[link].next=probe;
+            return probe;   
         }
-        else{
-            while(hashTable[probe].next!=-1 || count< TABLESIZE){
+        else if(hashTable[probe].indicator==USED){
+            count++;
+            //no duplicates
+            if(hashTable[probe].key==key)
+                return -1;
+            
+            for(int i=probe;i<TABLESIZE;i++){
+                if(hashTable[i].indicator==EMPTY){
+                    link = i;
+                    break;
+                }
+            }
+            if(link==-1){
+                for(int i=0;i<probe;i++){
+                    if(hashTable[i].indicator==EMPTY){
+                        link=i;
+                        break;
+                    }
+                }
+            }
+
+            if(hashTable[probe].next== -1){    
+                hashTable[probe].next = link;
+                if(link!=-1)
+                    probe = link;
+            }
+            else{
                 probe = hashTable[probe].next;
-                link = probe;
-                count++;
-                if(count>=TABLESIZE) return count;
             }
         }
     }
-    return -1;
+    if(count>=TABLESIZE)
+        return count;
 }
 
 int HashFind(int key, HashSlot hashTable[])
