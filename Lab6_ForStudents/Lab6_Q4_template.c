@@ -86,20 +86,20 @@ void BFS(Graph g, int v){
     if(v<=0) return;
     if(g.V<=0 || g.E<=0) return;
 
-    g.visited[v-1] = 1;
     // start from vertex v
     enqueue(&q, v);
+    g.visited[v-1] = 1;
+    printf("%d ",v);
 
     while(!isEmptyQueue(q)){
         cur = dequeue(&q);
-        printf("%d, ", cur);
 
-        while (g.matrix[cur - 1][j] == 1) {
-            if (g.visited[j] == 0){
-                    g.visited[j + 1] = 1;
-                    enqueue(&q, j + 1);
-                }
-            j++;
+        for(i=0;i<g.V;i++){
+            if(g.matrix[cur-1][i]== 1 && g.visited[i]==0){
+                g.visited[i]=1;
+                printf("%d ",i+1);
+                enqueue(&q, i+1);
+            }
         }
     }
 }
