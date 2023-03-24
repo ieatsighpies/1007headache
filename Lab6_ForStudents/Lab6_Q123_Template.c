@@ -127,18 +127,107 @@ void adjM2adjL(Graph *g)
 {
  // Question 1
  // Write your code here
+    if(g->type==ADJ_LIST) return;
+    if(g->V<=0) return;
 
+    int row=0, col=0;
+    ListNode* temp=NULL;
+
+    ListNode** tempList = (ListNode**) malloc(g->V*sizeof(ListNode*));
+    for(row=0;row<g->V;row++){
+        tempList[row]=NULL;
+    }
+    for(row=0;row<g->V;row++){
+        for(col=0;col<g->V;col++){
+            if(g->adj.matrix[row][col]==1){
+                if(tempList[row]==NULL){
+                    tempList[row] = (ListNode*) malloc(sizeof(ListNode));
+                    tempList[row]->vertex=col+1;
+                    tempList[row]->next = NULL;
+                    temp = tempList[row];
+                }
+                else{
+                    temp->next= malloc(sizeof(ListNode));
+                    temp->next->vertex = col+1;
+                    temp->next->next = NULL;
+                    temp = temp->next;
+                }
+            }
+        }
+    }
+    g->type = ADJ_LIST;
+
+    //free adjacency matrix
+    for(row=0;row<g->V;row++){
+        free(g->adj.matrix[row]);
+    }
+    free(g->adj.matrix);
+
+    g->adj.list = tempList;
 }
 
 void adjL2adjM(Graph *g){
 	// Question 2
     // Write your code here
+    int row=0,col=0;
+    int** tempAr;
 
+    if(g->V<=0) return;
+    if(g->type==ADJ_MATRIX) return;
+
+    tempAr = (int**) malloc(g->V*sizeof(int*));
+    for(row=0;row<g->V;row++){
+        tempAr[row] = (int *) malloc(g->V*sizeof(int));
+    }
+    for(row=0;row<g->V;row++){
+        for(col=0;col<g->V;col++)
+            tempAr[row][col]=0;
+    }
+
+    for(row=0;row<g->V;row++){
+        ListNode*cur=g->adj.list[row];
+
+        while(cur!=NULL){
+            tempAr[row][(cur->vertex)-1]=1;
+            cur=cur->next;
+        }
+    }
+    g->type=ADJ_MATRIX;
+
+    for(row=0;row<g->V;row++)
+        free(g->adj.list[row]);
+    free(g->adj.list);
+
+    g->adj.matrix = tempAr;
 }
 
 void calDegreeV(Graph g, int *degreeV)
 {
 	// Question 3
     // Write your code here
+    if(g.V<=0) return;
+
+    int i=0,j=0;
+    if(g.type==ADJ_MATRIX){
+        for(i=0;i<g.V;i++){
+            degreeV[i]=0;
+
+            for(j=0;j<g.V;j++){
+                if(g.adj.matrix[i][j]==1)
+                    degreeV[i]+= g.adj.matrix[i][j];
+            }
+        }
+    }
+    if(g.type==ADJ_LIST){
+        for(i=0;i<g.V;i++){
+            degreeV[i]=0;
+
+            ListNode*cur=g.adj.list[i];
+            while(cur){
+                degreeV[i]++;
+                cur=cur->next;
+            }
+        }
+    }
 }
 

@@ -78,7 +78,30 @@ int main()
 
 void BFS(Graph g, int v){
     // Write your code here
+    Queue q;
+    q.size = 0;
+    q.head = NULL;
+    q.tail = NULL;
+    int i,j, cur;
+    if(v<=0) return;
+    if(g.V<=0 || g.E<=0) return;
 
+    g.visited[v-1] = 1;
+    // start from vertex v
+    enqueue(&q, v);
+
+    while(!isEmptyQueue(q)){
+        cur = dequeue(&q);
+        printf("%d, ", cur);
+
+        while (g.matrix[cur - 1][j] == 1) {
+            if (g.visited[j] == 0){
+                    g.visited[j + 1] = 1;
+                    enqueue(&q, j + 1);
+                }
+            j++;
+        }
+    }
 }
 
 void printGraphMatrix(Graph g)
