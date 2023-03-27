@@ -89,7 +89,7 @@ void DFS_I (Graph g, int v)
 
     push(&s,v);
     visited[v-1] =1;
-    printf("%d, ",v);
+    //printf("%d, ",v);
 
     while(!isEmptyStack(s)){
         cur = peek(s);
@@ -97,12 +97,14 @@ void DFS_I (Graph g, int v)
         for(i=0;i<g.V;i++){
             if(g.matrix[cur-1][i]==1 && visited[i]==0){
                 visited[i]=1;
-                printf("%d ",i+1);
+                printf("%d, ",i+1);
                 push(&s,i+1);
+                adjVisited++;
             }
         }
         pop(&s);
     }
+
 }
 
 void printGraphMatrix(Graph g)
