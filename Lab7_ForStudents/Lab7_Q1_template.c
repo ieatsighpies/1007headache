@@ -78,7 +78,7 @@ void DFS_I (Graph g, int v)
 //Write your code here
     Stack s;
     s.head=NULL; s.size=0;
-    int i,adjVisited=0,cur;
+    int i,adjVertices=0,cur;
 
     if(g.E<=0 || g.V<=0) return;
     if(v<=0) return;
@@ -88,21 +88,20 @@ void DFS_I (Graph g, int v)
     for(i=0;i<g.V;i++) visited[i] = 0;
 
     push(&s,v);
-    visited[v-1] =1;
-    //printf("%d, ",v);
 
     while(!isEmptyStack(s)){
         cur = peek(s);
+        visited[cur-1] =1;
 
         for(i=0;i<g.V;i++){
             if(g.matrix[cur-1][i]==1 && visited[i]==0){
                 visited[i]=1;
-                printf("%d, ",i+1);
                 push(&s,i+1);
-                adjVisited++;
+                adjVertices++;
             }
+
         }
-        pop(&s);
+        printf("%d, ",peek(s)); pop(&s);
     }
 
 }
