@@ -11,7 +11,7 @@ typedef struct _graph{
     int V;
     int E;
     int *visited;
-    int **matrix;
+    ListNode **list;
 }Graph;
 
 typedef ListNode QueueNode;
@@ -37,18 +37,15 @@ int main()
 {
     Graph g;
     int i,j;
+    ListNode *temp;
 
     printf("Enter the number of vertices:\n");
     scanf("%d",&g.V);
 
     g.E = 0;
-    g.matrix = (int **)malloc(g.V*sizeof(int *));
+    g.list = (ListNode **)malloc(g.V*sizeof(ListNode *));
     for(i=0;i<g.V;i++)
-        g.matrix[i] = (int *)malloc(g.V*sizeof(int));
-
-    for(i=0;i<g.V;i++)
-       for(j=0;j<g.V;j++)
-           g.matrix[i][j] = 0;
+        g.list[i] = NULL;
 
     g.visited = (int *) malloc(sizeof(int)*g.V);
     for(i=0;i<g.V;i++) g.visited[i] = 0;
@@ -57,14 +54,21 @@ int main()
     printf("Enter two vertices which are adjacent to each other:\n");
     while(scanf("%d %d",&V1,&V2)==2)
     {
-        if(V1>0 && V1<=g.V && V2>0 && V2<=g.V)
+        V1= V1-1;
+
+        if(g.list[i]==NULL)
         {
-            g.matrix[V1-1][V2-1] = 1;
-            g.matrix[V2-1][V1-1] = 1;
-            g.E++;
+            g.list[i] = (ListNode*) malloc(sizeof(ListNode));
+            g.list[i]->vertex = V2;
+            g.list[i]->next = NULL;
         }
-        else
-            break;
+        else{
+            temp = (ListNode *) malloc(sizeof(ListNode));
+            temp->next = g.list[i];
+            temp->vertex = j;
+            g.list[i] = temp;
+        }
+        g.E++;
         printf("Enter two vertices which are adjacent to each other:\n");
     }
     scanf("%*c");
@@ -89,17 +93,20 @@ void BFS(Graph g, int v){
     // start from vertex v
     enqueue(&q, v);
     g.visited[v-1] = 1;
-    printf("%d ",v);
+    //printf("%d ",v);
 
     while(!isEmptyQueue(q)){
         cur = dequeue(&q);
+        printf("%d ",cur);
 
-        for(i=0;i<g.V;i++){
-            if(g.matrix[cur-1][i]== 1 && g.visited[i]==0){
-                g.visited[i]=1;
-                printf("%d ",i+1);
-                enqueue(&q, i+1);
+        ListNode *temp = g.list[cur-1];
+
+        while(temp){
+            if(g.visited[(temp->vertex)-1]==0){
+                g.visited[(temp->vertex)-1]=1;
+                enqueue(&q, temp->vertex);
             }
+            temp = temp->next;
         }
     }
 }
@@ -109,8 +116,11 @@ void printGraphMatrix(Graph g)
     int i,j;
 
     for(i=0;i<g.V;i++){
-        for(j=0;j<g.V;j++)
-            printf("%d\t",g.matrix[i][j]);
+        ListNode *temp = g.list[i];
+        printf("%d : ",i+1);
+        while(temp){
+            printf("%d, ", temp->vertex);
+        }
         printf("\n");
     }
 
