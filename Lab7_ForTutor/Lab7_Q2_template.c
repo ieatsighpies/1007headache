@@ -66,18 +66,6 @@ int main()
 void DFS_R (Graph_DFS g, int v)
 {
 //Write your code here
-    int i;
-    if(v<=0) return;
-    if(g.V<=0 || g.E<=0) return;
-
-    g.visited[v-1] = 1;
-    printf("%d, ",v);
-
-    for(i=0;i<g.V;i++){
-        if(g.visited[i]==0){
-            DFS_R(g,i+1);
-        }
-    }
 }
 
 void printGraphMatrix(Graph_DFS g)

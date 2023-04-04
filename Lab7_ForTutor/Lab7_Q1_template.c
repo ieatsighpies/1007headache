@@ -76,38 +76,6 @@ int main()
 void DFS_I (Graph g, int v)
 {
 //Write your code here
-    Stack s;
-    s.head=NULL; s.size=0;
-    int i,unvisited=0,cur;
-
-    if(g.E<=0 || g.V<=0) return;
-    if(v<=0) return;
-
-    //create visited array
-    int *visited = (int *) malloc(sizeof(int)*g.V);
-    for(i=0;i<g.V;i++) visited[i] = 0;
-
-    push(&s,v);
-    visited[v-1] =1;
-
-    while(!isEmptyStack(s)){
-        cur = peek(s);
-        unvisited =0;
-
-        for(i=0;i<g.V;i++){
-            if(g.matrix[cur-1][i]==1 && visited[i]==0){
-                visited[i]=1;
-                push(&s,i+1);
-                unvisited=1;
-            }
-        }
-        if(unvisited==0){
-            pop(&s);
-            printf("%d, ",cur);
-        }
-
-    }
-
 }
 
 void printGraphMatrix(Graph g)
