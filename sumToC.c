@@ -173,11 +173,9 @@ void removeAllItems(LinkedList *ll)
 
 void sumToC(LinkedList* ll, int C, ArrayList* al)
 {
-    al->head = NULL; al->size = 0;
 	//find the possible sequences
-	ll->head = (ListNode*) malloc(sizeof(ListNode));
 	//set first node as 1
-	ll->head->item = 1; ll->sum = 1; ll->size = 1;
+	insertNode(ll,0,1);
 
 	ListNode *temp = NULL,*cur;
 
@@ -189,7 +187,7 @@ void sumToC(LinkedList* ll, int C, ArrayList* al)
 		}
 		if(ll->sum == C){
 			//copy sequence into array
-			ArrayNode *tracker = al->head;
+			//ArrayNode *tracker = al->head;
 			//if arraylist is empty
 			if(al->head==NULL){
 				//new array node
@@ -225,14 +223,8 @@ void sumToC(LinkedList* ll, int C, ArrayList* al)
 			// 	//keep track of last array node in the al
 			// 	//tracker = tracker->next;
 			}
-
 			//increase size since added a sequence into al
-			// al->size++;
-            temp = ll->head;
-            while(temp){
-                printf("%d ", temp->item);
-                temp = temp->next;
-            }
+			al->size++;
 			//remove last LL node to continue while loop
 			removeNode(ll,ll->size-1);
 			//increment the last number to find more sequences
@@ -249,17 +241,4 @@ void sumToC(LinkedList* ll, int C, ArrayList* al)
 			ll->sum++;
 		}
 	}
-	//insert C into al
-	// tracker = al->head;
-	// while(tracker->next != NULL){
-	// 	tracker = tracker->next;
-	// }
-	// ArrayNode* cNode = (ArrayNode*) malloc(sizeof(ArrayNode) );
-	// tracker->next = cNode;
-	// cNode->next = NULL;
-	// cNode->itemArray = (int*) malloc(sizeof(int));
-	// cNode->sizeArray = 1;
-	// cNode->itemArray[0] = C;
-	// al->size++;
-
 }
