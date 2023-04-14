@@ -56,17 +56,18 @@ int main()
     {
         V1= V1-1;
 
-        if(g.list[i]==NULL)
+        if(g.list[V1]==NULL)
         {
-            g.list[i] = (ListNode*) malloc(sizeof(ListNode));
-            g.list[i]->vertex = V2;
-            g.list[i]->next = NULL;
+            temp = (ListNode*) malloc(sizeof(ListNode));
+            temp->vertex = V2;
+            temp->next = g.list[V1];
+            g.list[V1] = temp;
         }
         else{
             temp = (ListNode *) malloc(sizeof(ListNode));
-            temp->next = g.list[i];
-            temp->vertex = j;
-            g.list[i] = temp;
+            temp->next = g.list[V1];
+            temp->vertex = V2;
+            g.list[V1] = temp;
         }
         g.E++;
         printf("Enter two vertices which are adjacent to each other:\n");
@@ -93,12 +94,10 @@ void BFS(Graph g, int v){
     // start from vertex v
     enqueue(&q, v);
     g.visited[v-1] = 1;
-    //printf("%d ",v);
 
     while(!isEmptyQueue(q)){
         cur = dequeue(&q);
         printf("%d ",cur);
-
         ListNode *temp = g.list[cur-1];
 
         while(temp){
@@ -120,6 +119,7 @@ void printGraphMatrix(Graph g)
         printf("%d : ",i+1);
         while(temp){
             printf("%d, ", temp->vertex);
+            temp = temp->next;
         }
         printf("\n");
     }
