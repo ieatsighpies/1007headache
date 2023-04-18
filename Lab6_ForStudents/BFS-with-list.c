@@ -94,15 +94,17 @@ void BFS(Graph g, int v){
     // start from vertex v
     enqueue(&q, v);
     g.visited[v-1] = 1;
+    printf("%d ", v);
 
     while(!isEmptyQueue(q)){
-        cur = dequeue(&q);
-        printf("%d ",cur);
+        cur = getFront(q);
+        dequeue(&q);
         ListNode *temp = g.list[cur-1];
 
         while(temp){
             if(g.visited[(temp->vertex)-1]==0){
                 g.visited[(temp->vertex)-1]=1;
+                printf("%d ",temp->vertex);
                 enqueue(&q, temp->vertex);
             }
             temp = temp->next;
