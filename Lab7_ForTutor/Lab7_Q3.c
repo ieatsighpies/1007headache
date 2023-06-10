@@ -44,7 +44,7 @@ int nQueens(int** board, int BSize, int col)
             board[i][col] = 1;
 
            // recursive the next column placement
-            found = NQueens(board,BSize, col + 1)|| found;
+            found = nQueens(board,BSize, col + 1)|| found;
 
             //Delete the queen - Backtrack
             board[i][col] = 0;
